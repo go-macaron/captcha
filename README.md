@@ -48,7 +48,8 @@ func main() {
 // ...
 m.Use(captcha.Captchaer(captcha.Options{
 	URLPrefix:			"/captcha/", 	// URL prefix of getting captcha pictures.
-	FieldIdName:		"captcha_id", 	// Hidden input element ID.	FieldCaptchaName:	"captcha", 		// User input value element name in request form.
+	FieldIdName:		"captcha_id", 	// Hidden input element ID.
+	FieldCaptchaName:	"captcha", 		// User input value element name in request form.
 	ChallengeNums:		6, 				// Challenge number.
 	Expiration:			600, 			// Captcha expiration time in seconds.
 	CachePrefix:		"captcha_", 	// Cache key prefix captcha characters.
