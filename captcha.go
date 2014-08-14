@@ -92,13 +92,17 @@ func (c *Captcha) Verify(id string, challenge string) (success bool) {
 
 	key := c.key(id)
 
-	if v, ok := c.store.Get(key).([]byte); ok && len(v) == len(challenge) {
+	if v, ok := c.store.Get(key).([]byte); ok {
 		chars = v
 	} else {
 		return
 	}
 
 	defer c.store.Delete(key)
+
+	if len(chars) != len(challenge) {
+		return
+	}
 
 	// verify challenge
 	for i, c := range chars {
