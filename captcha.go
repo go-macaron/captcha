@@ -35,6 +35,7 @@ var (
 // Captcha represents a captcha service.
 type Captcha struct {
 	store            cache.Cache
+	SubURL           string
 	URLPrefix        string
 	FieldIdName      string
 	FieldCaptchaName string
@@ -63,8 +64,8 @@ func (c *Captcha) CreateHtml() template.HTML {
 	}
 	return template.HTML(fmt.Sprintf(`<input type="hidden" name="%s" value="%s">
 	<a class="captcha" href="javascript:">
-		<img onclick="this.src=('%s%s.png?reload='+(new Date()).getTime())" class="captcha-img" src="%s%s.png">
-	</a>`, c.FieldIdName, value, c.URLPrefix, value, c.URLPrefix, value))
+		<img onclick="this.src=('%s%s%s.png?reload='+(new Date()).getTime())" class="captcha-img" src="%s%s%s.png">
+	</a>`, c.FieldIdName, value, c.SubURL, c.URLPrefix, value, c.SubURL, c.URLPrefix, value))
 }
 
 // create a new captcha id
@@ -115,6 +116,8 @@ func (c *Captcha) Verify(id string, challenge string) (success bool) {
 }
 
 type Options struct {
+	// Suburl path. Default is empty.
+	SubURL string
 	// URL prefix of getting captcha pictures. Default is "/captcha/".
 	URLPrefix string
 	// Hidden input element ID. Default is "captcha_id".
@@ -134,6 +137,8 @@ func prepareOptions(options []Options) Options {
 	if len(options) > 0 {
 		opt = options[0]
 	}
+
+	opt.SubURL = strings.TrimSuffix(opt.SubURL, "/")
 
 	// Defaults.
 	if len(opt.URLPrefix) == 0 {
@@ -168,6 +173,7 @@ func prepareOptions(options []Options) Options {
 // NewCaptcha initializes and returns a captcha with given options.
 func NewCaptcha(opt Options) *Captcha {
 	return &Captcha{
+		SubURL:           opt.SubURL,
 		URLPrefix:        opt.URLPrefix,
 		FieldIdName:      opt.FieldIdName,
 		FieldCaptchaName: opt.FieldCaptchaName,
