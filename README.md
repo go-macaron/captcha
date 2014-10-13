@@ -51,6 +51,8 @@ m.Use(captcha.Captchaer(captcha.Options{
 	FieldIdName:		"captcha_id", 	// Hidden input element ID.
 	FieldCaptchaName:	"captcha", 		// User input value element name in request form.
 	ChallengeNums:		6, 				// Challenge number.
+	Width:				240,			// Captcha image width.
+	Height:				80,				// Captcha image height.
 	Expiration:			600, 			// Captcha expiration time in seconds.
 	CachePrefix:		"captcha_", 	// Cache key prefix captcha characters.
 }))

@@ -126,6 +126,10 @@ type Options struct {
 	FieldCaptchaName string
 	// Challenge number. Default is 6.
 	ChallengeNums int
+	// Captcha image width. Default is 240.
+	Width int
+	// Captcha image height. Default is 80.
+	Height int
 	// Captcha expiration time in seconds. Default is 600.
 	Expiration int64
 	// Cache key prefix captcha characters. Default is "captcha_".
@@ -146,23 +150,24 @@ func prepareOptions(options []Options) Options {
 	} else if opt.URLPrefix[len(opt.URLPrefix)-1] != '/' {
 		opt.URLPrefix += "/"
 	}
-
 	if len(opt.FieldIdName) == 0 {
 		opt.FieldIdName = "captcha_id"
 	}
-
 	if len(opt.FieldCaptchaName) == 0 {
 		opt.FieldCaptchaName = "captcha"
 	}
-
 	if opt.ChallengeNums == 0 {
 		opt.ChallengeNums = 6
 	}
-
+	if opt.Width == 0 {
+		opt.Width = 240
+	}
+	if opt.Height == 0 {
+		opt.Height = 80
+	}
 	if opt.Expiration == 0 {
 		opt.Expiration = 600
 	}
-
 	if len(opt.CachePrefix) == 0 {
 		opt.CachePrefix = "captcha_"
 	}
@@ -177,8 +182,8 @@ func NewCaptcha(opt Options) *Captcha {
 		URLPrefix:        opt.URLPrefix,
 		FieldIdName:      opt.FieldIdName,
 		FieldCaptchaName: opt.FieldCaptchaName,
-		StdWidth:         stdWidth,
-		StdHeight:        stdHeight,
+		StdWidth:         opt.Width,
+		StdHeight:        opt.Height,
 		ChallengeNums:    opt.ChallengeNums,
 		Expiration:       opt.Expiration,
 		CachePrefix:      opt.CachePrefix,

@@ -28,9 +28,6 @@ const (
 	fontHeight = 18
 	blackChar  = 1
 
-	// Standard width and height of a captcha image.
-	stdWidth  = 240
-	stdHeight = 80
 	// Maximum absolute skew factor of a single digit.
 	maxSkew = 0.7
 	// Number of background circles.
