@@ -19,7 +19,6 @@ package captcha
 import (
 	"fmt"
 	"html/template"
-	"net/http"
 	"path"
 	"strings"
 
@@ -78,7 +77,7 @@ func (c *Captcha) CreateCaptcha() (string, error) {
 }
 
 // verify from a request
-func (c *Captcha) VerifyReq(req *http.Request) bool {
+func (c *Captcha) VerifyReq(req macaron.Request) bool {
 	req.ParseForm()
 	return c.Verify(req.Form.Get(c.FieldIdName), req.Form.Get(c.FieldCaptchaName))
 }
@@ -160,10 +159,10 @@ func prepareOptions(options []Options) Options {
 		opt.ChallengeNums = 6
 	}
 	if opt.Width == 0 {
-		opt.Width = 240
+		opt.Width = stdWidth
 	}
 	if opt.Height == 0 {
-		opt.Height = 80
+		opt.Height = stdHeight
 	}
 	if opt.Expiration == 0 {
 		opt.Expiration = 600
