@@ -51,8 +51,8 @@ func (c *Captcha) key(id string) string {
 }
 
 // generate rand chars with default chars
-func (c *Captcha) genRandChars() []byte {
-	return com.RandomCreateBytes(c.ChallengeNums, defaultChars...)
+func (c *Captcha) genRandChars() string {
+	return string(com.RandomCreateBytes(c.ChallengeNums, defaultChars...))
 }
 
 // tempalte func for output html
@@ -83,31 +83,31 @@ func (c *Captcha) VerifyReq(req macaron.Request) bool {
 }
 
 // direct verify id and challenge string
-func (c *Captcha) Verify(id string, challenge string) (success bool) {
+func (c *Captcha) Verify(id string, challenge string) bool {
 	if len(challenge) == 0 || len(id) == 0 {
-		return
+		return false
 	}
 
-	var chars []byte
+	var chars string
 
 	key := c.key(id)
 
-	if v, ok := c.store.Get(key).([]byte); ok {
+	if v, ok := c.store.Get(key).(string); ok {
 		chars = v
 	} else {
-		return
+		return false
 	}
 
 	defer c.store.Delete(key)
 
 	if len(chars) != len(challenge) {
-		return
+		return false
 	}
 
 	// verify challenge
-	for i, c := range chars {
+	for i, c := range []byte(chars) {
 		if c != challenge[i]-48 {
-			return
+			return false
 		}
 	}
 
@@ -198,7 +198,7 @@ func Captchaer(options ...Options) macaron.Handler {
 		cpt.store = cache
 
 		if strings.HasPrefix(ctx.Req.RequestURI, cpt.URLPrefix) {
-			var chars []byte
+			var chars string
 			id := path.Base(ctx.Req.RequestURI)
 			if i := strings.Index(id, "."); i > -1 {
 				id = id[:i]
@@ -214,7 +214,7 @@ func Captchaer(options ...Options) macaron.Handler {
 					panic(fmt.Errorf("fail to reload captcha: %v", err))
 				}
 			} else {
-				if v, ok := cpt.store.Get(key).([]byte); ok {
+				if v, ok := cpt.store.Get(key).(string); ok {
 					chars = v
 				} else {
 					ctx.Status(404)
@@ -223,7 +223,7 @@ func Captchaer(options ...Options) macaron.Handler {
 				}
 			}
 
-			if _, err := NewImage(chars, cpt.StdWidth, cpt.StdHeight).WriteTo(ctx.Resp); err != nil {
+			if _, err := NewImage([]byte(chars), cpt.StdWidth, cpt.StdHeight).WriteTo(ctx.Resp); err != nil {
 				panic(fmt.Errorf("fail to write captcha: %v", err))
 			}
 			return
