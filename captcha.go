@@ -27,6 +27,12 @@ import (
 	"github.com/macaron-contrib/cache"
 )
 
+const _VERSION = "0.0.1"
+
+func Version() string {
+	return _VERSION
+}
+
 var (
 	defaultChars = []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 )
@@ -211,7 +217,7 @@ func Captchaer(options ...Options) macaron.Handler {
 				if err := cpt.store.Put(key, chars, cpt.Expiration); err != nil {
 					ctx.Status(500)
 					ctx.Write([]byte("captcha reload error"))
-					panic(fmt.Errorf("fail to reload captcha: %v", err))
+					panic(fmt.Errorf("reload captcha: %v", err))
 				}
 			} else {
 				if v, ok := cpt.store.Get(key).(string); ok {
@@ -224,7 +230,7 @@ func Captchaer(options ...Options) macaron.Handler {
 			}
 
 			if _, err := NewImage([]byte(chars), cpt.StdWidth, cpt.StdHeight).WriteTo(ctx.Resp); err != nil {
-				panic(fmt.Errorf("fail to write captcha: %v", err))
+				panic(fmt.Errorf("write captcha: %v", err))
 			}
 			return
 		}

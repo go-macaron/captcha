@@ -1,4 +1,3 @@
-// Copyright 2013 Beego Authors
 // Copyright 2014 Unknwon
 //
 // Licensed under the Apache License, Version 2.0 (the "License"): you may
@@ -16,23 +15,33 @@
 package captcha
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"testing"
 
+	"github.com/Unknwon/macaron"
+	"github.com/macaron-contrib/cache"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func Test_Siphash(t *testing.T) {
-	Convey("Siphash", t, func() {
-		good := uint64(0xe849e8bb6ffe2567)
-		cur := siphash(0, 0, 0)
-		So(cur, ShouldEqual, good)
+func Test_Version(t *testing.T) {
+	Convey("Get version", t, func() {
+		So(Version(), ShouldEqual, _VERSION)
 	})
 }
 
-func BenchmarkSiprng(b *testing.B) {
-	b.SetBytes(8)
-	p := &siprng{}
-	for i := 0; i < b.N; i++ {
-		p.Uint64()
-	}
+func Test_Captcha(t *testing.T) {
+	Convey("Captch service", t, func() {
+		m := macaron.New()
+		m.Use(cache.Cacher())
+		m.Use(Captchaer())
+		m.Get("/", func() {
+
+		})
+
+		resp := httptest.NewRecorder()
+		req, err := http.NewRequest("GET", "/", nil)
+		So(err, ShouldBeNil)
+		m.ServeHTTP(resp, req)
+	})
 }
