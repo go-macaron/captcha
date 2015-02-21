@@ -3,8 +3,6 @@ captcha [![Build Status](https://drone.io/github.com/macaron-contrib/captcha/sta
 
 Middleware captcha provides captcha service for [Macaron](https://github.com/Unknwon/macaron).
 
-[API Reference](https://gowalker.org/github.com/macaron-contrib/captcha)
-
 ### Installation
 
 	go get github.com/macaron-contrib/captcha
