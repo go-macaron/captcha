@@ -203,9 +203,9 @@ func Captchaer(options ...Options) macaron.Handler {
 	return func(ctx *macaron.Context, cache cache.Cache) {
 		cpt.store = cache
 
-		if strings.HasPrefix(ctx.Req.RequestURI, cpt.URLPrefix) {
+		if strings.HasPrefix(ctx.Req.URL.Path, cpt.URLPrefix) {
 			var chars string
-			id := path.Base(ctx.Req.RequestURI)
+			id := path.Base(ctx.Req.URL.Path)
 			if i := strings.Index(id, "."); i > -1 {
 				id = id[:i]
 			}
