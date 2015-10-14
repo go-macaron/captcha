@@ -1,5 +1,5 @@
 // Copyright 2013 Beego Authors
-// Copyright 2014 Unknwon
+// Copyright 2014 The Macaron Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License"): you may
 // not use this file except in compliance with the License. You may obtain
@@ -23,11 +23,11 @@ import (
 	"strings"
 
 	"github.com/Unknwon/com"
-	"github.com/Unknwon/macaron"
-	"github.com/macaron-contrib/cache"
+	"github.com/go-macaron/cache"
+	"gopkg.in/macaron.v1"
 )
 
-const _VERSION = "0.0.1"
+const _VERSION = "0.1.0"
 
 func Version() string {
 	return _VERSION
