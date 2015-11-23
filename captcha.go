@@ -199,8 +199,8 @@ func NewCaptcha(opt Options) *Captcha {
 // An single variadic captcha.Options struct can be optionally provided to configure.
 // This should be register after cache.Cacher.
 func Captchaer(options ...Options) macaron.Handler {
-	cpt := NewCaptcha(prepareOptions(options))
 	return func(ctx *macaron.Context, cache cache.Cache) {
+		cpt := NewCaptcha(prepareOptions(options))
 		cpt.store = cache
 
 		if strings.HasPrefix(ctx.Req.URL.Path, cpt.URLPrefix) {
