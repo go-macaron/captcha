@@ -61,16 +61,21 @@ func (c *Captcha) genRandChars() string {
 	return string(com.RandomCreateBytes(c.ChallengeNums, defaultChars...))
 }
 
-// tempalte func for output html
-func (c *Captcha) CreateHtml() template.HTML {
+// CreateHTML outputs HTML for display and fetch new captcha images.
+func (c *Captcha) CreateHTML() template.HTML {
 	value, err := c.CreateCaptcha()
 	if err != nil {
 		panic(fmt.Errorf("fail to create captcha: %v", err))
 	}
-	return template.HTML(fmt.Sprintf(`<input type="hidden" name="%s" value="%s">
+	return template.HTML(fmt.Sprintf(`<input type="hidden" name="%[1]s" value="%[2]s">
 	<a class="captcha" href="javascript:" tabindex="-1">
-		<img onclick="this.src=('%s%s%s.png?reload='+(new Date()).getTime())" class="captcha-img" src="%s%s%s.png">
-	</a>`, c.FieldIdName, value, c.SubURL, c.URLPrefix, value, c.SubURL, c.URLPrefix, value))
+		<img onclick="this.src=('%[3]s%[4]s%[2]s.png?reload='+(new Date()).getTime())" class="captcha-img" src="%[3]s%[4]s%[2]s.png">
+	</a>`, c.FieldIdName, value, c.SubURL, c.URLPrefix))
+}
+
+// DEPRECATED
+func (c *Captcha) CreateHtml() template.HTML {
+	return c.CreateHTML()
 }
 
 // create a new captcha id
