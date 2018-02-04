@@ -15,6 +15,7 @@
 package captcha
 
 import (
+	"image/color"
 	"testing"
 
 	"github.com/Unknwon/com"
@@ -34,7 +35,7 @@ func BenchmarkNewImage(b *testing.B) {
 	d := com.RandomCreateBytes(6, defaultChars...)
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		NewImage(d, stdWidth, stdHeight)
+		NewImage(d, stdWidth, stdHeight, color.Palette{})
 	}
 }
 
@@ -44,7 +45,7 @@ func BenchmarkImageWriteTo(b *testing.B) {
 	b.StartTimer()
 	counter := &byteCounter{}
 	for i := 0; i < b.N; i++ {
-		img := NewImage(d, stdWidth, stdHeight)
+		img := NewImage(d, stdWidth, stdHeight, color.Palette{})
 		img.WriteTo(counter)
 		b.SetBytes(counter.n)
 		counter.n = 0

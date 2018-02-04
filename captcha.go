@@ -19,6 +19,7 @@ package captcha
 import (
 	"fmt"
 	"html/template"
+	"image/color"
 	"path"
 	"strings"
 
@@ -49,6 +50,7 @@ type Captcha struct {
 	ChallengeNums    int
 	Expiration       int64
 	CachePrefix      string
+	ColorPalette     color.Palette
 }
 
 // generate key string
@@ -144,6 +146,9 @@ type Options struct {
 	Expiration int64
 	// Cache key prefix captcha characters. Default is "captcha_".
 	CachePrefix string
+	// ColorPalette holds a collection of primary colors used for
+	// the captcha's text. If not defined, a random color will be generated.
+	ColorPalette color.Palette
 }
 
 func prepareOptions(options []Options) Options {
@@ -197,6 +202,7 @@ func NewCaptcha(opt Options) *Captcha {
 		ChallengeNums:    opt.ChallengeNums,
 		Expiration:       opt.Expiration,
 		CachePrefix:      opt.CachePrefix,
+		ColorPalette:     opt.ColorPalette,
 	}
 }
 
@@ -234,7 +240,7 @@ func Captchaer(options ...Options) macaron.Handler {
 				}
 			}
 
-			if _, err := NewImage([]byte(chars), cpt.StdWidth, cpt.StdHeight).WriteTo(ctx.Resp); err != nil {
+			if _, err := NewImage([]byte(chars), cpt.StdWidth, cpt.StdHeight, cpt.ColorPalette).WriteTo(ctx.Resp); err != nil {
 				panic(fmt.Errorf("write captcha: %v", err))
 			}
 			return
