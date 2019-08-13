@@ -18,7 +18,7 @@ import (
 	"image/color"
 	"testing"
 
-	"github.com/Unknwon/com"
+	"github.com/unknwon/com"
 )
 
 type byteCounter struct {

@@ -23,7 +23,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/Unknwon/com"
+	"github.com/unknwon/com"
 	"github.com/go-macaron/cache"
 	"gopkg.in/macaron.v1"
 )
