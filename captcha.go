@@ -28,12 +28,6 @@ import (
 	"gopkg.in/macaron.v1"
 )
 
-const _VERSION = "0.1.0"
-
-func Version() string {
-	return _VERSION
-}
-
 var (
 	defaultChars = []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 )

@@ -24,12 +24,6 @@ import (
 	"gopkg.in/macaron.v1"
 )
 
-func Test_Version(t *testing.T) {
-	Convey("Get version", t, func() {
-		So(Version(), ShouldEqual, _VERSION)
-	})
-}
-
 func Test_Captcha(t *testing.T) {
 	Convey("Captch service", t, func() {
 		m := macaron.New()
